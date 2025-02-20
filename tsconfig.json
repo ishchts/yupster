@@ -1,0 +1,21 @@
+{
+	"compilerOptions": {
+		"baseUrl": "./",
+		"paths": {
+			"@/*": ["src/*"]
+		},
+		"strict": true,
+		// "outDir": "ts-dist",  // Куда сохранять скомпилированные файлы
+		"target": "ES6",   // В какую версию JS компилировать
+		"module": "NodeNext",  // Какой модульный стандарт использовать
+		"moduleResolution": "nodenext",
+		"sourceMap": false,  // Генерировать .map файлы для отладки
+		"declaration": true, // Создавать .d.ts файлы для типов
+		"removeComments": true, // Удалять комментарии из итогового кода
+		"esModuleInterop": true,
+		"allowImportingTsExtensions": true,
+		"noEmit": true
+	},
+	"include": ["src/**/*"],
+}
+  
