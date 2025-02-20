@@ -1,11 +1,7 @@
 import { StringSchema } from "./string.ts";
+import { NumberSchema } from "./number.ts";
 
-const schema = new StringSchema().required().min(5).email();
-
-schema.validate('test@example.com')
-    .then((validValue) => console.log('Valid:', validValue))
-    .catch((invalidValue) => console.log('Invalid:', invalidValue));
-
-schema.validate('invalid')
-    .then(validValue => console.log('Valid:', validValue))
-    .catch(errors => console.error('Errors:', errors));
+export const yup = {
+    string: () => new StringSchema(),
+    number: () => new NumberSchema()
+}
