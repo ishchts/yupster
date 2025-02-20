@@ -6,7 +6,7 @@
   "scripts": {
     "build": "yarn rollup -c",
     "dev": "rollup -c -w",
-    "watch": "yarn tsx watch ./src/main.ts"
+    "watch": "yarn tsx watch ./src/index.ts"
   },
   "packageManager": "yarn@3.8.0",
   "devDependencies": {
