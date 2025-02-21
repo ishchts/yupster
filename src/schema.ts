@@ -31,4 +31,20 @@ export abstract class Schema<T> {
 
     return Promise.resolve(value);
   }
+
+  oneOf(values: T[], message: string = `Must be one of: ${values.join(", ")}`): this {
+    this._tests.push({
+      test: (value: T) => values.includes(value),
+      message,
+    });
+    return this;
+  }
+
+  notOneOf(values: T[], message: string = `Must not be one of: ${values.join(", ")}`): this {
+    this._tests.push({
+      test: (value: T) => !values.includes(value),
+      message,
+    });
+    return this;
+  }
 }

@@ -37,11 +37,20 @@ export const yup = {
 //   .then(validValue => console.log("schemaBoolean Valid:", validValue))
 //   .catch(errors => console.error("schemaBoolean Errors:", errors));
 
-const schemaArray = yup.array<string>().of(yup.string().min(3)).min(2).max(5);
-schemaArray.validate(["abc", "def"])
+const colorSchema = yup.string().oneOf(["red", "blue", "green"]);
+colorSchema.validate("red")
   .then(validValue => console.log("Valid:", validValue))
   .catch(errors => console.error("Errors:", errors));
 
-schemaArray.validate(["a"])
+colorSchema.validate("yellow")
+  .then(validValue => console.log("Valid:", validValue))
+  .catch(errors => console.error("Errors yellow:", errors));
+
+const forbiddenSchema = yup.string().notOneOf(["forbidden", "restricted"]);
+forbiddenSchema.validate("allowed")
+  .then(validValue => console.log("Valid allowed:", validValue))
+  .catch(errors => console.error("Errors allowed:", errors));
+
+forbiddenSchema.validate("forbidden")
   .then(validValue => console.log("Valid:", validValue))
   .catch(errors => console.error("Errors:", errors));
