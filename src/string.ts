@@ -7,7 +7,7 @@ export class StringSchema extends Schema<string> {
 
   min(length: number, message: string = `Must be at least ${length} characters.`): this {
     this._tests.push({
-      test: (value: string) => typeof value === "string" && value.length > length,
+      test: (value: string) => typeof value === "string" && value.length >= length,
       message,
     });
     return this;

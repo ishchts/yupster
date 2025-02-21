@@ -6,7 +6,8 @@
   "scripts": {
     "build": "yarn rollup -c",
     "dev": "rollup -c -w",
-    "watch": "yarn tsx watch ./src/index.ts"
+    "watch": "yarn tsx watch ./src/index.ts",
+    "lint": "yarn eslint ."
   },
   "packageManager": "yarn@3.8.0",
   "devDependencies": {

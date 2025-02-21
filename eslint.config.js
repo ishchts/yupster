@@ -26,6 +26,7 @@ export default [
       "no-console": "warn", // Предупреждение при использовании console.log
       "curly": "error", // Обязательное использование фигурных скобок
       "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }], // Запрещает неиспользуемые переменные, но разрешает _
+      "max-len": ["error", { "code": 120, "ignoreUrls": true }], // Максимальная длина строки 140 символов, исключая URL
     },
   },
   {
