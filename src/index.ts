@@ -13,3 +13,15 @@ export const yup = {
   object: <T extends Record<string, unknown>>(schema: Shape<T>) => new ObjectSchema<T>(schema),
 };
 
+
+const schema = yup.object({
+  user: yup.object({
+    name: yup.string().required(),
+    age: yup.number().required().min(18),
+  }),
+});
+
+schema.validate({ user: { name: "", age: 16 } })
+  .catch(err => {
+    console.log("errors", err);
+  });

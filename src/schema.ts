@@ -1,27 +1,25 @@
+type ValidateError = { path: string, message: string }
+
 export abstract class Schema<T> {
   protected _tests: { test: (_value: T) => boolean, message: string }[] = [];
   protected _required: boolean = false;
 
-  required(): this {
+  required(message: string = "This field is required."): this {
     this._required = true;
     this._tests.push({
       test: (value: T) => value !== null && value !== "",
-      message: "This field is required.",
+      message,
     });
 
     return this;
   }
 
-  validate(value: T): Promise<T> {
-    const errors: string[] = [];
-
-    if (this._required && (value === null && value === "")) {
-      errors.push("This field is required.");
-    }
+  validate(value: T, path: string = ""): Promise<T> {
+    const errors: ValidateError[] = [];
 
     for (const { test, message } of this._tests) {
       if (!test(value)) {
-        errors.push(message);
+        errors.push({ path, message });
       }
     }
 
