@@ -1,25 +1,41 @@
 type ValidateError = { path: string, message: string }
 
 export abstract class Schema<T> {
-  protected _tests: { test: (_value: T) => boolean, message: string }[] = [];
-  protected _required: boolean = false;
+  protected _internalTests: { test: (_value: T) => boolean, message: string }[] = [];
 
   required(message: string = "This field is required."): this {
-    this._required = true;
-    this._tests.push({
-      test: (value: T) => value !== null && value !== "",
+    this._internalTests.push({
+      test: (value: T) => !!value || value === 0,
       message,
     });
 
     return this;
   }
 
+  validateSync(value: T, path: string = ""): T {
+    const errors: ValidateError[] = [];
+
+    for (const { test, message } of this._internalTests) {
+      if (!test(value)) {
+        errors.push({ path, message });
+        break;
+      }
+    }
+
+    if (errors.length) {
+      throw errors;
+    }
+
+    return value;
+  }
+
   validate(value: T, path: string = ""): Promise<T> {
     const errors: ValidateError[] = [];
 
-    for (const { test, message } of this._tests) {
+    for (const { test, message } of this._internalTests) {
       if (!test(value)) {
         errors.push({ path, message });
+        break;
       }
     }
 
@@ -31,7 +47,7 @@ export abstract class Schema<T> {
   }
 
   oneOf(values: T[], message: string = `Must be one of: ${values.join(", ")}`): this {
-    this._tests.push({
+    this._internalTests.push({
       test: (value: T) => values.includes(value),
       message,
     });
@@ -39,7 +55,7 @@ export abstract class Schema<T> {
   }
 
   notOneOf(values: T[], message: string = `Must not be one of: ${values.join(", ")}`): this {
-    this._tests.push({
+    this._internalTests.push({
       test: (value: T) => !values.includes(value),
       message,
     });

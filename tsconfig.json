@@ -6,7 +6,7 @@
 		},
 		"strict": true,
 		// "outDir": "ts-dist",  // Куда сохранять скомпилированные файлы
-		"target": "ES6",   // В какую версию JS компилировать
+		"target": "ES2017",   // В какую версию JS компилировать
 		"module": "NodeNext",  // Какой модульный стандарт использовать
 		"moduleResolution": "nodenext",
 		"sourceMap": false,  // Генерировать .map файлы для отладки

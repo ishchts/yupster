@@ -21,7 +21,11 @@ export default [
       "quotes": ["error", "double"], // Использование двойных кавычек
       "comma-dangle": ["error", "always-multiline"], // Висячая запятая при многострочном коде
       "no-trailing-spaces": "error", // Запрещает пробелы в конце строки
-      "space-before-function-paren": ["error", "never"], // Без пробела перед скобками функции
+      "space-before-function-paren": ["error", {  // Без пробела перед скобками функции
+        anonymous: "never",  // Без пробела у обычных функций
+        named: "never",      // Без пробела у именованных функций
+        asyncArrow: "always", // Разрешает пробел после `async`
+      }],
       "eqeqeq": ["error", "always"], // Использование строгого сравнения
       "no-console": "warn", // Предупреждение при использовании console.log
       "curly": "error", // Обязательное использование фигурных скобок

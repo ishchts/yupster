@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Schema } from "./schema.ts";
+import { Schema, ValidateError } from "./schema.ts";
 
 export type Shape<T> = { [K in keyof T]: Schema<T[K]> }
 
@@ -15,6 +15,26 @@ export class ObjectSchema<T extends Record<string, any>> extends Schema<T> {
     return new ObjectSchema<T & U>(mergedShape);
   }
 
+  // fixme: update validateSync and validate
+  validateSync(value: T, path: string = ""): T | ValidateError {
+    if (typeof value !== "object" || value === null) {
+      return [{ path, message: "Must be an object."}];
+    }
+
+    const validations = Object.keys(this._shape).map((key) => {
+      const newPath = path ? `${path}.${key}` : key;
+      return this._shape[key].validateSync(value[key], newPath);
+    });
+
+    const results = validations;
+
+    const errors = results.filter(res => typeof res === "object" && ("error" in res));
+    if (errors.length) {
+      throw errors;
+    }
+    return value;
+  }
+
   async validate(value: T, path: string = ""): Promise<T> {
     if (typeof value !== "object" || value === null) {
       return Promise.reject([{ path, message: "Must be an object."}]);
@@ -22,11 +42,11 @@ export class ObjectSchema<T extends Record<string, any>> extends Schema<T> {
 
     const validations = Object.keys(this._shape).map((key) => {
       const newPath = path ? `${path}.${key}` : key;
-
       return this._shape[key].validate(value[key], newPath);
     });
 
     const results = await Promise.all(validations);
+
     const errors = results.filter(res => typeof res === "object" && ("error" in res));
     if (errors.length) {
       return Promise.reject(errors);

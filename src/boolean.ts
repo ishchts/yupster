@@ -6,7 +6,7 @@ export class BooleanSchema extends Schema<boolean> {
   }
 
   isValid(message: string = "Must be a booleans"): this {
-    this._tests.push({
+    this._internalTests.push({
       test: (value: boolean) => typeof value === "boolean",
       message,
     });
@@ -14,7 +14,7 @@ export class BooleanSchema extends Schema<boolean> {
   }
 
   isTrue(message: string = "Must be true."): this {
-    this._tests.push({
+    this._internalTests.push({
       test: (value: boolean) => value === true,
       message,
     });
@@ -22,7 +22,7 @@ export class BooleanSchema extends Schema<boolean> {
   }
 
   isFalse(message: string = "Must be false."): this {
-    this._tests.push({
+    this._internalTests.push({
       test: (value: boolean) => value === false,
       message,
     });

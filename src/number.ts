@@ -6,7 +6,7 @@ export class NumberSchema extends Schema<number> {
   }
 
   min(limit: number, message: string = `Must be greater than or equal to ${limit}.`): this {
-    this._tests.push({
+    this._internalTests.push({
       test: (value: number) => typeof value === "number" && value >= limit,
       message,
     });
@@ -15,7 +15,7 @@ export class NumberSchema extends Schema<number> {
   }
 
   max(limit: number, message: string = `Must be less than or equal to ${limit}.`): this {
-    this._tests.push({
+    this._internalTests.push({
       test: (value: number) => typeof value === "number" && value <= limit,
       message,
     });
@@ -23,7 +23,7 @@ export class NumberSchema extends Schema<number> {
   }
 
   positive(message: string = "Value must be a positive number."): this {
-    this._tests.push({
+    this._internalTests.push({
       test: (value: number) => typeof value === "number" && value > 0,
       message,
     });
@@ -31,7 +31,7 @@ export class NumberSchema extends Schema<number> {
   }
 
   negative(message: string = "Value must be a negative number."): this {
-    this._tests.push({
+    this._internalTests.push({
       test: (value) => typeof value === "number" && value < 0,
       message,
     });
@@ -39,7 +39,7 @@ export class NumberSchema extends Schema<number> {
   }
 
   integer(message: string = "Must be an integer."): this {
-    this._tests.push({
+    this._internalTests.push({
       test: (value: number) => typeof value === "number" && Number.isInteger(value),
       message,
     });
