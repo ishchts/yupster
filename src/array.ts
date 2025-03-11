@@ -9,6 +9,7 @@ export class ArraySchema<T> extends Schema<T[]> {
 
   length(len: number, message: string = `Must have exactly ${len} items.`): this {
     this._internalTests.push({
+      name: "array-length",
       test: (value: T[]) => Array.isArray(value) && value.length === len,
       message,
     });
@@ -17,6 +18,7 @@ export class ArraySchema<T> extends Schema<T[]> {
 
   min(minLen: number, message: string = `Must have at least ${minLen} items.`): this {
     this._internalTests.push({
+      name: "array-min",
       test: (value: T[]) => Array.isArray(value) && value.length >= minLen,
       message,
     });
@@ -25,6 +27,7 @@ export class ArraySchema<T> extends Schema<T[]> {
 
   max(maxLen: number, message: string = `Must have at most ${maxLen} items.`): this {
     this._internalTests.push({
+      name: "array-max",
       test: (value: T[]) => Array.isArray(value) && value.length <= maxLen,
       message,
     });

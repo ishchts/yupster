@@ -24,7 +24,8 @@ export class ValidationError extends Error {
 }
 
 export abstract class Schema<T> {
-  protected _internalTests: { test: (_value: T) => boolean, message: string }[] = [];
+  protected __yupster__: boolean = true;
+  protected _internalTests: { name: string, test: (_value: T) => boolean, message: string }[] = [];
   protected _tests: Test<T>[] = [];
 
   test(
@@ -38,6 +39,7 @@ export abstract class Schema<T> {
 
   required(message: string = "This field is required."): this {
     this._internalTests.push({
+      name: "required",
       test: (value: T) => !!value || value === 0,
       message,
     });
@@ -89,6 +91,7 @@ export abstract class Schema<T> {
 
   oneOf(values: T[], message: string = `Must be one of: ${values.join(", ")}`): this {
     this._internalTests.push({
+      name: "oneOf",
       test: (value: T) => values.includes(value),
       message,
     });
@@ -97,6 +100,7 @@ export abstract class Schema<T> {
 
   notOneOf(values: T[], message: string = `Must not be one of: ${values.join(", ")}`): this {
     this._internalTests.push({
+      name: "notOneOf",
       test: (value: T) => !values.includes(value),
       message,
     });
