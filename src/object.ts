@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Schema, ValidateError } from "./schema.ts";
+import { Schema } from "./schema.ts";
 
 export type Shape<T> = { [K in keyof T]: Schema<T[K]> }
 
@@ -15,10 +15,9 @@ export class ObjectSchema<T extends Record<string, any>> extends Schema<T> {
     return new ObjectSchema<T & U>(mergedShape);
   }
 
-  // fixme: update validateSync and validate
-  validateSync(value: T, path: string = ""): T | ValidateError {
+  validateSync(value: T, path: string = ""): T {
     if (typeof value !== "object" || value === null) {
-      return [{ path, message: "Must be an object."}];
+      return [{ path, message: "Must be an object."}] as any;
     }
 
     const validations = Object.keys(this._shape).map((key) => {

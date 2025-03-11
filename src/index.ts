@@ -21,24 +21,36 @@ const emails = [
   "test6@mail.ru",
 ];
 
+const checkEmail = (value: string): Promise<boolean> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(emails.includes(value));
+    }, 300);
+  });
+};
+
 const schema = yup.object({
   user: yup.object({
     name: yup.string().required(),
     email: yup
       .string()
-      .required()
-      .email(),
-    // .test("unique email", async ({ path, value }) => {
-    //   await checkEmail(value);
-    // }, "${path} is not unique"),
+      // .required()
+      .email()
+      .test(
+        "unique email",
+        ({path}) => `${path} is not unique`,
+        (value) => {
+          return emails.includes(value);
+        },
+      ),
     age: yup.number().required().min(18),
   }),
 });
 
-const emailSchema = yup.string().required().email();
+// const emailSchema = yup.string().required().email();
 
 const resObjectSchema = schema.validateSync({ user: { name: "ivan", age: 18, email: "asd@mail.ru" } });
-const resStringSchema = emailSchema.validateSync("asd@mail.ru");
+// const resStringSchema = emailSchema.validateSync("asd@mail.ru");
 console.log("resObjectSchema", resObjectSchema);
-console.log("resStringSchema", resStringSchema);
-console.log("emails", emails);
+// console.log("resStringSchema", resStringSchema);
+// console.log("emails", emails);
