@@ -3,6 +3,7 @@ import { NumberSchema } from "./number.ts";
 import { BooleanSchema } from "./boolean.ts";
 import { ArraySchema } from "./array.ts";
 import { ObjectSchema, Shape } from "./object.ts";
+import { ValidationError } from "./schema.ts";
 
 export const yup = {
   string: () => new StringSchema(),
@@ -47,10 +48,10 @@ const schema = yup.object({
   }),
 });
 
-// const emailSchema = yup.string().required().email();
-
-const resObjectSchema = schema.validateSync({ user: { name: "ivan", age: 18, email: "asd@mail.ru" } });
-// const resStringSchema = emailSchema.validateSync("asd@mail.ru");
-console.log("resObjectSchema", resObjectSchema);
-// console.log("resStringSchema", resStringSchema);
-// console.log("emails", emails);
+try {
+  const valid = await schema.validate({ user: { name: "asd", email:"asd@mail.ru"}});
+} catch(error) {
+  console.log('error', error instanceof ValidationError);
+  console.log('error', error.name);
+  console.log('error', error.format());
+}

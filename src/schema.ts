@@ -6,6 +6,23 @@ type Test<T> = {
   test: (_value: T, _context: unknown) => Promise<boolean> | boolean
 }
 
+export class ValidationError extends Error {
+  errors: { path: string; message: string }[];
+
+  constructor(errors: { path: string; message: string }[]) {
+    super("Validation failed");
+    this.errors = errors;
+  }
+
+  toJSON() {
+    return { message: this.message, errors: this.errors };
+  }
+
+  format() {
+    return this.errors.map(err => `${err.path}: ${err.message}`).join("\n");
+  }
+}
+
 export abstract class Schema<T> {
   protected _internalTests: { test: (_value: T) => boolean, message: string }[] = [];
   protected _tests: Test<T>[] = [];
@@ -34,7 +51,7 @@ export abstract class Schema<T> {
     for (const { test, message } of this._internalTests) {
       if (!test(value)) {
         errors.push({ path, message });
-        throw errors;
+        throw new ValidationError(errors);
       }
     }
 
@@ -42,7 +59,7 @@ export abstract class Schema<T> {
       const isValid = test(value, { path, originValue: value });
       if (!isValid) {
         errors.push({ path, message: typeof testMessage === "function" ? testMessage({ name, path  }) : testMessage });
-        throw errors;
+        throw new ValidationError(errors);
       }
     }
 
@@ -55,7 +72,7 @@ export abstract class Schema<T> {
     for (const { test, message } of this._internalTests) {
       if (!test(value)) {
         errors.push({ path, message });
-        return Promise.reject(errors);
+        return Promise.reject(new ValidationError(errors));
       }
     }
 
@@ -63,7 +80,7 @@ export abstract class Schema<T> {
       const isValid = await test(value, { path, originValue: value });
       if (!isValid) {
         errors.push({ path, message: typeof testMessage === "function" ? testMessage({ name, path  }) : testMessage });
-        return Promise.reject(errors);
+        return Promise.reject(new ValidationError(errors));
       }
     }
 
