@@ -1,5 +1,8 @@
 {
-  "name": "yupster",
+  "name": "@ishchts/yupster",
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "version": "0.0.1",
   "description": "Лёгкая и мощная библиотека валидации данных, вдохновлённая Yup",
