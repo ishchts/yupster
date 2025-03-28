@@ -89,19 +89,31 @@ export abstract class Schema<T> {
     return Promise.resolve(value);
   }
 
-  oneOf(values: T[], message: string = `Must be one of: ${values.join(", ")}`): this {
+  oneOf(values: unknown[], message: string = `Must be one of: ${values.join(", ")}`): this {
     this._internalTests.push({
       name: "oneOf",
-      test: (value: T) => values.includes(value),
+      test: (value: T) => {
+        if (Array.isArray(value)) {
+          const map: Record<string, unknown> = value.reduce((acc, el) => ({...acc, [String(el)]: true}), {});
+          return values.some((el) => (el as string) in map);
+        }
+        return values.includes(value);
+      },
       message,
     });
     return this;
   }
 
-  notOneOf(values: T[], message: string = `Must not be one of: ${values.join(", ")}`): this {
+  notOneOf(values: unknown[], message: string = `Must not be one of: ${values.join(", ")}`): this {
     this._internalTests.push({
       name: "notOneOf",
-      test: (value: T) => !values.includes(value),
+      test: (value: T) => {
+        if (Array.isArray(value)) {
+          const map: Record<string, unknown> = value.reduce((acc, el) => ({...acc, [String(el)]: true}), {});
+          return values.every((el) => !((el as string) in map));
+        }
+        return !values.includes(value);
+      },
       message,
     });
     return this;

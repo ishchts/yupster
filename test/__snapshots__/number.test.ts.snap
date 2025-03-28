@@ -1,0 +1,21 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Yup number validation > validate: integer field 1`] = `[Error: Validation failed]`;
+
+exports[`Yup number validation > validate: integer field 2`] = `[Error: Validation failed]`;
+
+exports[`Yup number validation > validate: max field 1`] = `[Error: Validation failed]`;
+
+exports[`Yup number validation > validate: max field 2`] = `[Error: Validation failed]`;
+
+exports[`Yup number validation > validate: min field 1`] = `[Error: Validation failed]`;
+
+exports[`Yup number validation > validate: min field 2`] = `[Error: Validation failed]`;
+
+exports[`Yup number validation > validate: negative field 1`] = `[Error: Validation failed]`;
+
+exports[`Yup number validation > validate: negative field 2`] = `[Error: Validation failed]`;
+
+exports[`Yup number validation > validate: positive field 1`] = `[Error: Validation failed]`;
+
+exports[`Yup number validation > validate: positive field 2`] = `[Error: Validation failed]`;
