@@ -10,7 +10,7 @@
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ishchts/yupster.git"
+    "url": "git+https://github.com/ishchts/yupster.git"
   },
   "scripts": {
     "build": "yarn rollup -c",

@@ -59,11 +59,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '22'
+          registry-url: "https://registry.npmjs.org"
 
       - name: Install dependencies
         run: yarn install --immutable
 
       - name: Publish to npm
-        run: yarn npm publish --access public
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
