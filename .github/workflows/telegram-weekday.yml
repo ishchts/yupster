@@ -1,0 +1,40 @@
+# .github/workflows/telegram-weekday.yml
+name: Утреннее сообщение в Telegram
+
+on:
+  schedule:
+    - cron: '0 9 * * *'  # каждый день в 9:00 утра по UTC
+  workflow_dispatch:  # можно запустить вручную
+
+jobs:
+  morning_message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Получаем день недели
+        id: weekday
+        run: echo "day=$(date +%A)" >> "$GITHUB_OUTPUT"
+
+      - name: Формируем сообщение
+        id: message
+        run: |
+          case "${{ steps.weekday.outputs.day }}" in
+            Monday|Tuesday|Wednesday|Thursday)
+              echo "text=Рабочий день, держись!" >> "$GITHUB_OUTPUT"
+              ;;
+            Friday)
+              echo "text=Пятница! Скоро выходные 🎉" >> "$GITHUB_OUTPUT"
+              ;;
+            Saturday|Sunday)
+              echo "text=Выходной! Отдыхай 😎" >> "$GITHUB_OUTPUT"
+              ;;
+          esac
+
+      - name: Отправляем в Telegram
+        env:
+          TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TEXT: ${{ steps.message.outputs.text }}
+        run: |
+          curl -s -X POST "https://api.telegram.org/bot$TOKEN/sendMessage" \
+            -d chat_id="$CHAT_ID" \
+            -d text="$TEXT"
